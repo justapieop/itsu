@@ -6,6 +6,7 @@ import { JwtService } from "../jwt/Jwt.service";
 import { User } from "../user/domain/User";
 import { RegisterCredentialsDto } from "./application/ports/in/RegisterCredentials.dto";
 import { hash } from "@node-rs/argon2";
+import { ApiResponse } from "@nestjs/swagger";
 
 @Controller("/auth")
 export class AuthController {
@@ -14,6 +15,15 @@ export class AuthController {
     private readonly jwtService: JwtService,
   ) {}
 
+  @ApiResponse({
+    status: 201,
+    description: "User registered successfully",
+    type: AuthResponse,
+  })
+  @ApiResponse({
+    status: 400,
+    description: "User already exists",
+  })
   @Post("/register")
   public async onRegister(@Body() credentials: RegisterCredentialsDto): Promise<AuthResponse> {
     let user: User;
@@ -42,6 +52,19 @@ export class AuthController {
     };
   }
   
+  @ApiResponse({
+    status: 201,
+    description: "User logged in successfully",
+    type: AuthResponse,
+  })
+  @ApiResponse({
+    status: 401,
+    description: "Invalid credentials",
+  })
+  @ApiResponse({
+    status: 404,
+    description: "User not found",
+  })
   @Post("/login")
   public async onLogin(@Body() credentials: LoginCredentialsDto): Promise<AuthResponse> {
     let user: User;
