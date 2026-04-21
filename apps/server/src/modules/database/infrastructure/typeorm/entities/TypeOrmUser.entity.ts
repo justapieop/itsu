@@ -8,7 +8,6 @@ export class TypeOrmUserEntity {
   @PrimaryColumn({
     type: "uuid",
   })
-  @Index()
   public id!: string;
   
   @Column({
