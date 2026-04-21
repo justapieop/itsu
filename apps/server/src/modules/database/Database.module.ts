@@ -1,7 +1,7 @@
 import { Module } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { USER_REPOSITORY } from "../user/application/ports/UserRepository.port";
+import { USER_REPOSITORY } from "../user/application/ports/in/UserRepository.port";
 import { TypeOrmUserEntity } from "./infrastructure/typeorm/entities/TypeOrmUser.entity";
 import { TypeOrmUserRepository } from "./infrastructure/typeorm/repository/TypeOrmUser.repository";
 
