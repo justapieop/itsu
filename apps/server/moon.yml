@@ -5,8 +5,10 @@ project:
   description: Backend project for itsu
 
 tasks:
-  build:
-    command: npm run build
+  dev:
+    command: "npm run start:debug"
     inputs:
       - src/**/*
+    outputs:
+      - dist
     
