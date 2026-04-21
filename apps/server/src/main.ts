@@ -1,12 +1,15 @@
 import "reflect-metadata";
 import { NestFactory } from "@nestjs/core";
-import { INestApplication } from "@nestjs/common";
+import { INestApplication, ValidationPipe, ClassSerializerInterceptor } from "@nestjs/common";
+import { Reflector } from "@nestjs/core";
 import { AppModule } from "./App.module";
 import { DocumentBuilder, OpenAPIObject, SwaggerModule } from "@nestjs/swagger";
 import { ConfigService } from "@nestjs/config";
 
 async function bootstrap(): Promise<void> {
   const app: INestApplication = await NestFactory.create(AppModule);
+  app.useGlobalPipes(new ValidationPipe({ transform: true, whitelist: true }));
+  app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
 
   const docs: Omit<OpenAPIObject, "paths"> = new DocumentBuilder()
   .setTitle("itsu-api")
