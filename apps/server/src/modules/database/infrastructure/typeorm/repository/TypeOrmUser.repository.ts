@@ -41,7 +41,6 @@ export class TypeOrmUserRepository implements UserRepository {
       password: input.password,
       name: input.name,
       lastLogin: now,
-      lastRefresh: now,
     });
 
     try {

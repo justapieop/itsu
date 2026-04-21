@@ -46,10 +46,4 @@ export class TypeOrmUserEntity {
     name: "last_login",
   })
   public lastLogin!: Date;
-
-  @Column({
-    type: "timestamptz",
-    name: "last_refresh",
-  })
-  public lastRefresh!: Date;
 }
