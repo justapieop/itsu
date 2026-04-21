@@ -1,5 +1,4 @@
-import { BeforeInsert, Column, CreateDateColumn, Entity, Index, PrimaryColumn, UpdateDateColumn } from "typeorm";
-import { v7 as uuidv7 } from "uuid";
+import { Column, CreateDateColumn, Entity, Index, PrimaryColumn, UpdateDateColumn } from "typeorm";
 
 @Entity({
   name: "users",
@@ -53,11 +52,4 @@ export class TypeOrmUserEntity {
     name: "last_refresh",
   })
   public lastRefresh!: Date;
-
-  @BeforeInsert()
-  public generateId(): void {
-    if (!this.id) {
-      this.id = uuidv7();
-    }
-  }
 }
