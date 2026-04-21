@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, Post, UnauthorizedException } from "@nestjs/common";
+import { BadRequestException, Body, Controller, NotFoundException, Post, UnauthorizedException } from "@nestjs/common";
 import { AuthResponse } from "./application/ports/out/Auth.response";
 import { LoginCredentialsDto } from "./application/ports/in/LoginCredentials.dto";
 import { AuthService } from "./Auth.service";
@@ -7,6 +7,7 @@ import { User } from "../user/domain/User";
 import { RegisterCredentialsDto } from "./application/ports/in/RegisterCredentials.dto";
 import { hash } from "@node-rs/argon2";
 import { ApiResponse } from "@nestjs/swagger";
+import { UserNotFoundError } from "../user/domain/UserNotFound.error";
 
 @Controller("/auth")
 export class AuthController {
@@ -71,6 +72,10 @@ export class AuthController {
     try {
       user = await this.authService.login(credentials.email, credentials.password);
     } catch (e: unknown) {
+      if (e instanceof UserNotFoundError) {
+        throw new NotFoundException(e);
+      }
+
       throw new UnauthorizedException(e);
     }
 
