@@ -12,14 +12,20 @@ export class TypeOrmUserRepository implements UserRepository {
     private readonly userRepository: Repository<TypeOrmUserEntity>,
   ) {}
 
-  public async save(input: User): Promise<void> {
-    const existingUserByEmail = await this.userRepository.findOne({
+  public async save(input: User): Promise<User> {
+    const existingUserByEmail: TypeOrmUserEntity | null = await this.userRepository.findOne({
       where: { email: input.email },
       select: { id: true },
     });
 
     if (existingUserByEmail) {
-      return;
+      return new User(
+        existingUserByEmail.id,
+        existingUserByEmail.email,
+        existingUserByEmail.password,
+        existingUserByEmail.createdAt,
+        existingUserByEmail.updatedAt
+      );
     }
 
     const entity: TypeOrmUserEntity = this.userRepository.create({
@@ -30,7 +36,7 @@ export class TypeOrmUserRepository implements UserRepository {
       updatedAt: input.updatedAt,
     });
 
-    await this.userRepository.save(entity);
+    return await this.userRepository.save(entity);
   }
 
   public async findUserById(id: string): Promise<User | null> {
