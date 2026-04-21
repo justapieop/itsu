@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { UserRepository } from "../../../../user/application/ports/UserRepository.port";
+import { UserRepository } from "../../../../user/application/ports/in/UserRepository.port";
 import { UserEmailAlreadyExistsError } from "../../../../user/domain/UserEmailAlreadyExists.error";
 import { User } from "../../../../user/domain/User";
 import { Repository } from "typeorm";
