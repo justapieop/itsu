@@ -6,9 +6,7 @@ project:
 
 tasks:
   dev:
-    command: "npm run start:debug"
-    inputs:
-      - src/**/*
-    outputs:
-      - dist
+    command: "npm run start:dev"
+    outputs: 
+      - dist/**/*
     
