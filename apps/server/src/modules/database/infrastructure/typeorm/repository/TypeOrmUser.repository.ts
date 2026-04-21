@@ -14,12 +14,12 @@ export class TypeOrmUserRepository implements UserRepository {
   ) {}
 
   public async updateLastLogin(email: string): Promise<void> {
-    await this.userRepository.update({ email, }, { lastLogin: new Date(), });
+    await this.userRepository.update({ email, active: true, }, { lastLogin: new Date(), });
   }
 
   public async findUserByEmail(email: string): Promise<User | null> {
     const entity: TypeOrmUserEntity | null = await this.userRepository.findOne({
-      where: { email, },
+      where: { email, active: true, },
     });
 
     if (!entity) {
@@ -67,7 +67,7 @@ export class TypeOrmUserRepository implements UserRepository {
 
   public async findUserById(id: string): Promise<User | null> {
     const entity: TypeOrmUserEntity | null = await this.userRepository.findOne({
-      where: { id, },
+      where: { id, active: true, },
     });
 
     if (!entity) {
