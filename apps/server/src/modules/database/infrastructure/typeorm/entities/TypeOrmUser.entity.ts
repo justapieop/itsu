@@ -1,5 +1,5 @@
-import { BeforeInsert, Column, CreateDateColumn, Entity, PrimaryColumn, UpdateDateColumn } from "typeorm";
-import uuid from "uuid";
+import { BeforeInsert, Column, CreateDateColumn, Entity, Index, PrimaryColumn, UpdateDateColumn } from "typeorm";
+import { v7 as uuidv7 } from "uuid";
 
 @Entity({
   name: "users",
@@ -8,6 +8,7 @@ export class TypeOrmUserEntity {
   @PrimaryColumn({
     type: "uuid",
   })
+  @Index()
   public id!: string;
   
   @Column({
@@ -15,6 +16,7 @@ export class TypeOrmUserEntity {
     unique: true,
     nullable: false,
   })
+  @Index()
   public email!: string;
 
   @Column({
@@ -38,7 +40,7 @@ export class TypeOrmUserEntity {
   @BeforeInsert()
   public generateId(): void {
     if (!this.id) {
-      this.id = uuid.v7();
+      this.id = uuidv7();
     }
   }
 }
