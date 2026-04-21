@@ -13,6 +13,10 @@ export class TypeOrmUserRepository implements UserRepository {
     private readonly userRepository: Repository<TypeOrmUserEntity>,
   ) {}
 
+  public async updateLastLogin(email: string): Promise<void> {
+    await this.userRepository.update({ email, }, { lastLogin: new Date(), });
+  }
+
   public async findUserByEmail(email: string): Promise<User | null> {
     const entity: TypeOrmUserEntity | null = await this.userRepository.findOne({
       where: { email, },
