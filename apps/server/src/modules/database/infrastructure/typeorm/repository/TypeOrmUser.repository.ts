@@ -1,6 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { UserRepository } from "../../../../user/application/ports/UserRepository.port";
+import { UserEmailAlreadyExistsError } from "../../../../user/domain/UserEmailAlreadyExists.error";
 import { User } from "../../../../user/domain/User";
 import { Repository } from "typeorm";
 import { TypeOrmUserEntity } from "../entities/TypeOrmUser.entity";
@@ -13,21 +14,6 @@ export class TypeOrmUserRepository implements UserRepository {
   ) {}
 
   public async save(input: User): Promise<User> {
-    const existingUserByEmail: TypeOrmUserEntity | null = await this.userRepository.findOne({
-      where: { email: input.email },
-      select: { id: true },
-    });
-
-    if (existingUserByEmail) {
-      return new User(
-        existingUserByEmail.id,
-        existingUserByEmail.email,
-        existingUserByEmail.password,
-        existingUserByEmail.createdAt,
-        existingUserByEmail.updatedAt
-      );
-    }
-
     const entity: TypeOrmUserEntity = this.userRepository.create({
       id: input.id,
       email: input.email,
@@ -36,7 +22,19 @@ export class TypeOrmUserRepository implements UserRepository {
       updatedAt: input.updatedAt,
     });
 
-    return await this.userRepository.save(entity);
+    try {
+      const saved: TypeOrmUserEntity = await this.userRepository.save(entity);
+
+      return new User(
+        saved.id,
+        saved.email,
+        saved.password,
+        saved.createdAt,
+        saved.updatedAt,
+      );
+    } catch (error: unknown) {
+      throw new UserEmailAlreadyExistsError(input.email);
+    }
   }
 
   public async findUserById(id: string): Promise<User | null> {
