@@ -42,6 +42,7 @@ export class AuthService {
         now,
         now,
         name,
+        true,
       );
 
       return await this.userRepository.save(user);

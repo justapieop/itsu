@@ -33,6 +33,7 @@ export class TypeOrmUserRepository implements UserRepository {
       entity.createdAt,
       entity.updatedAt,
       entity.name,
+      entity.active,
     );
   }
 
@@ -57,6 +58,7 @@ export class TypeOrmUserRepository implements UserRepository {
         saved.createdAt,
         saved.updatedAt,
         saved.name,
+        saved.active,
       );
     } catch (error: unknown) {
       throw new UserEmailAlreadyExistsError(input.email);
@@ -79,6 +81,7 @@ export class TypeOrmUserRepository implements UserRepository {
       entity.createdAt,
       entity.updatedAt,
       entity.name,
+      entity.active,
     );
   }
 }

@@ -32,14 +32,23 @@ export class TypeOrmUserEntity {
   @CreateDateColumn({
     type: "timestamptz",
     name: "created_at",
+    nullable: false,
   })
   public createdAt!: Date;
 
   @UpdateDateColumn({
     type: "timestamptz",
     name: "updated_at",
+    nullable: false,
   })
   public updatedAt!: Date;
+
+  @Column({
+    type: "boolean",
+    nullable: false,
+    default: true,
+  })
+  public active!: boolean;
 
   @Column({
     type: "timestamptz",
