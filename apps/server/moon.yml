@@ -1,0 +1,12 @@
+language: typescript
+
+project: 
+  name: server
+  description: Backend project for itsu
+
+tasks:
+  build:
+    command: npm run build
+    inputs:
+      - src/**/*
+    
