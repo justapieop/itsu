@@ -12,6 +12,12 @@ export class TypeOrmUserEntity {
   
   @Column({
     type: "text",
+    nullable: false,
+  })
+  public name!: string;
+
+  @Column({
+    type: "text",
     unique: true,
     nullable: false,
   })
@@ -35,6 +41,18 @@ export class TypeOrmUserEntity {
     name: "updated_at",
   })
   public updatedAt!: Date;
+
+  @Column({
+    type: "timestamptz",
+    name: "last_login",
+  })
+  public lastLogin!: Date;
+
+  @Column({
+    type: "timestamptz",
+    name: "last_refresh",
+  })
+  public lastRefresh!: Date;
 
   @BeforeInsert()
   public generateId(): void {

@@ -20,6 +20,7 @@ export class TypeOrmUserRepository implements UserRepository {
       password: input.password,
       createdAt: input.createdAt,
       updatedAt: input.updatedAt,
+      name: input.name,
     });
 
     try {
@@ -31,6 +32,7 @@ export class TypeOrmUserRepository implements UserRepository {
         saved.password,
         saved.createdAt,
         saved.updatedAt,
+        saved.name
       );
     } catch (error: unknown) {
       throw new UserEmailAlreadyExistsError(input.email);
@@ -52,6 +54,7 @@ export class TypeOrmUserRepository implements UserRepository {
       entity.password,
       entity.createdAt,
       entity.updatedAt,
+      entity.name,
     );
   }
 }
