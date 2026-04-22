@@ -29,7 +29,11 @@ export class AuthenticatedGuard implements CanActivate {
 
     const token: string = splittedHeader[1];
 
-    const decoded = await this.jwtService.decodeToken(token);
+    const decoded = await this.jwtService.verifyToken(token);
+
+    if (!decoded) {
+      throw new UnauthorizedException();
+    }
 
     const { sub } = decoded;
 
