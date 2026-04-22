@@ -20,7 +20,7 @@ import { TypeOrmUserRepository } from "./infrastructure/typeorm/repository/TypeO
         synchronize: configService.get<string>("NODE_ENV", "production").toLowerCase() === "development",
         parseInt8: true,
         cache: true,
-        ssl: configService.get<string>("POSTGRES_SSL_ENABLED", "true").toLowerCase() === "true",
+        ssl: configService.get<string>("POSTGRES_SECURE", "true").toLowerCase() === "true",
       }),
     }),
     TypeOrmModule.forFeature([TypeOrmUserEntity]),
