@@ -53,6 +53,14 @@ export class TypeOrmUserEntity {
   @Column({
     type: "timestamptz",
     name: "last_login",
+    nullable: false,
   })
   public lastLogin!: Date;
+
+  @Column({
+    type: "timestamptz",
+    name: "last_refresh",
+    nullable: false,
+  })
+  public lastRefresh!: Date;
 }

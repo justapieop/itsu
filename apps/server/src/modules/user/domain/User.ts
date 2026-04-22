@@ -7,5 +7,7 @@ export class User {
     public readonly updatedAt: Date,
     public readonly name: string,
     public readonly active: boolean,
+    public readonly lastLogin: Date,
+    public readonly lastRefresh: Date,
   ) {}
 }
