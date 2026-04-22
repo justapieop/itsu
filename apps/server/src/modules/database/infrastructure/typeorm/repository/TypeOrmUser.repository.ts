@@ -13,13 +13,9 @@ export class TypeOrmUserRepository implements UserRepository {
     private readonly userRepository: Repository<TypeOrmUserEntity>,
   ) {}
 
-  public async updateLastLogin(email: string): Promise<void> {
-    await this.userRepository.update({ email, active: true, }, { lastLogin: new Date(), });
-  }
-
   public async findUserByEmail(email: string): Promise<User | null> {
     const entity: TypeOrmUserEntity | null = await this.userRepository.findOne({
-      where: { email, active: true, },
+      where: { email, },
     });
 
     if (!entity) {
@@ -34,8 +30,7 @@ export class TypeOrmUserRepository implements UserRepository {
       entity.updatedAt,
       entity.name,
       entity.active,
-      entity.lastLogin,
-      entity.lastRefresh,
+      entity.admin,
     );
   }
 
@@ -47,7 +42,7 @@ export class TypeOrmUserRepository implements UserRepository {
       email: input.email,
       password: input.password,
       name: input.name,
-      lastLogin: now,
+      admin: input.admin
     });
 
     try {
@@ -61,8 +56,7 @@ export class TypeOrmUserRepository implements UserRepository {
         saved.updatedAt,
         saved.name,
         saved.active,
-        saved.lastLogin,
-        saved.lastRefresh,
+        saved.admin,
       );
     } catch (error: unknown) {
       throw new UserEmailAlreadyExistsError(input.email);
@@ -71,7 +65,7 @@ export class TypeOrmUserRepository implements UserRepository {
 
   public async findUserById(id: string): Promise<User | null> {
     const entity: TypeOrmUserEntity | null = await this.userRepository.findOne({
-      where: { id, active: true, },
+      where: { id, },
     });
 
     if (!entity) {
@@ -86,8 +80,7 @@ export class TypeOrmUserRepository implements UserRepository {
       entity.updatedAt,
       entity.name,
       entity.active,
-      entity.lastLogin,
-      entity.lastRefresh,
+      entity.admin,
     );
   }
 }

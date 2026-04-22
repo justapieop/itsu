@@ -51,16 +51,8 @@ export class TypeOrmUserEntity {
   public active!: boolean;
 
   @Column({
-    type: "timestamptz",
-    name: "last_login",
+    type: "boolean",
     nullable: false,
   })
-  public lastLogin!: Date;
-
-  @Column({
-    type: "timestamptz",
-    name: "last_refresh",
-    nullable: false,
-  })
-  public lastRefresh!: Date;
+  public admin!: boolean;
 }
