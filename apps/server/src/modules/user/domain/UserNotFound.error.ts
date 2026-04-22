@@ -1,6 +1,6 @@
 export class UserNotFoundError extends Error {
-  public constructor(email: string) {
+  public constructor(identifier: string) {
     super();
-    this.message = `User with email "${email}" not found.`;
+    this.message = `User with identifier "${identifier}" not found.`;
   }
 }
