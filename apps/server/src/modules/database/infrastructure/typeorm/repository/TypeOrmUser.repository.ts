@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { UserRepository } from "../../../../user/application/ports/in/UserRepository.port";
-import { UserEmailAlreadyExistsError } from "../../../../user/domain/UserEmailAlreadyExists.error";
+import { UserEmailAlreadyExistsError } from "../../../../user/domain/UserAlreadyExists.error";
 import { User } from "../../../../user/domain/User";
 import { Repository } from "typeorm";
 import { TypeOrmUserEntity } from "../entities/TypeOrmUser.entity";
@@ -34,6 +34,8 @@ export class TypeOrmUserRepository implements UserRepository {
       entity.updatedAt,
       entity.name,
       entity.active,
+      entity.lastLogin,
+      entity.lastRefresh,
     );
   }
 
@@ -59,6 +61,8 @@ export class TypeOrmUserRepository implements UserRepository {
         saved.updatedAt,
         saved.name,
         saved.active,
+        saved.lastLogin,
+        saved.lastRefresh,
       );
     } catch (error: unknown) {
       throw new UserEmailAlreadyExistsError(input.email);
@@ -82,6 +86,8 @@ export class TypeOrmUserRepository implements UserRepository {
       entity.updatedAt,
       entity.name,
       entity.active,
+      entity.lastLogin,
+      entity.lastRefresh,
     );
   }
 }
