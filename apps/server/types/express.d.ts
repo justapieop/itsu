@@ -1,4 +1,4 @@
-import { User } from "../src/modules/user/domain/User";
+import {} from "../src/modules/user/domain/User";
 
 declare module "express" {
   export interface Request {
