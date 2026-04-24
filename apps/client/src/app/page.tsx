@@ -1,8 +1,9 @@
+import { Button } from "@heroui/react";
 import { JSX } from "react";
-import { Text } from "@chakra-ui/react";
 
 export default function Home(): JSX.Element {
   return (
-    <Text>Hello</Text>
+    <Button variant="primary">Save</Button>
+
   );
 }
