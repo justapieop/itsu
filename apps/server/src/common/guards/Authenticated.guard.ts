@@ -1,15 +1,16 @@
 import { CanActivate, ExecutionContext, Inject, Injectable, NotFoundException, UnauthorizedException } from "@nestjs/common";
 import { Request } from "express";
-import { JwtService } from "../../modules/jwt/Jwt.service";
-import { USER_REPOSITORY, type UserRepository } from "../../modules/user/application/ports/in/UserRepository.port";
+import { JWKS_SERVICE, type JwksService } from "../../modules/jwks/application/in/Jwks.port";
 import { User } from "../../modules/user/domain/User";
-
+import { USER_REPOSITORY, type UserRepository } from "../../modules/user/application/in/UserRepository.port";
 @Injectable()
 export class AuthenticatedGuard implements CanActivate {
   public constructor(
-    private readonly jwtService: JwtService,
+    @Inject(JWKS_SERVICE)
+    private readonly jwksService: JwksService,
     @Inject(USER_REPOSITORY)
     private readonly userRepository: UserRepository,
+
   ) {}
 
   public async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -29,27 +30,20 @@ export class AuthenticatedGuard implements CanActivate {
 
     const token: string = splittedHeader[1];
 
-    const decoded = await this.jwtService.verifyToken(token);
+    let decoded: string;
 
-    if (!decoded) {
+    try {
+      decoded = await this.jwksService.verifyJwt(token);
+    } catch (e: unknown) {
       throw new UnauthorizedException();
     }
-
-    const { sub } = decoded;
-
-    const user: User | null = await this.userRepository.findUserById(sub);
+    const user: User | null = await this.userRepository.findUserById(decoded, false);
 
     if (!user) {
       throw new NotFoundException();
     }
 
-    try {
-      await this.jwtService.verifyToken(token);
-
-      req.user = user;
-    } catch (e: unknown) {
-      throw new UnauthorizedException();
-    }
+    req.user = user;
     
     return true;
   }
