@@ -1,10 +1,10 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { UserRepository } from "../../../../user/application/ports/in/UserRepository.port";
-import { UserEmailAlreadyExistsError } from "../../../../user/domain/UserAlreadyExists.error";
-import { User } from "../../../../user/domain/User";
 import { Repository } from "typeorm";
-import { TypeOrmUserEntity } from "../entities/TypeOrmUser.entity";
+import { UserRepository } from "../application/ports/in/UserRepository.port";
+import { User } from "../domain/User";
+import { UserEmailAlreadyExistsError } from "../domain/UserAlreadyExists.error";
+import { TypeOrmUserEntity } from "./TypeOrmUser.entity";
 
 @Injectable()
 export class TypeOrmUserRepository implements UserRepository {

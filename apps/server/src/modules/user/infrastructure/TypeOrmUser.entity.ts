@@ -46,7 +46,7 @@ export class TypeOrmUserEntity {
   @Column({
     type: "boolean",
     nullable: false,
-    default: true,
+    default: false,
   })
   public active!: boolean;
 
