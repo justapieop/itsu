@@ -33,4 +33,13 @@ export class TypeOrmCourtEntity {
   })
   @Index()
   public address!: string;
+
+  @Column()
+
+  @Column({
+    type: "boolean",
+    nullable: false,
+    default: false,
+  })
+  public isOpen!: boolean;
 }
