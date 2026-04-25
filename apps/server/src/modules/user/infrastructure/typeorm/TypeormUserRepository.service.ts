@@ -1,10 +1,11 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, UseInterceptors } from "@nestjs/common";
 import { UserRepository } from "../../application/in/UserRepository.port";
 import { User } from "../../domain/User";
 import { InjectRepository } from "@nestjs/typeorm";
 import { TypeormUserSchema } from "./TypeormUser.schema";
 import { InsertResult, Repository } from "typeorm";
 import { UserInsertError } from "../../domain/UserInsert.error";
+import { CacheInterceptor, CacheTTL } from "@nestjs/cache-manager";
 
 @Injectable()
 export class TypeormUserRepositoryService implements UserRepository {
@@ -61,6 +62,8 @@ export class TypeormUserRepositoryService implements UserRepository {
     );
   }
 
+  @UseInterceptors(CacheInterceptor)
+  @CacheTTL(60 * 60 * 1000)
   public async findUserById(id: string, suspended: boolean): Promise<User | null> {
     const fetched: TypeormUserSchema | null = await this.userRepo.findOneBy({ id, suspended, });
 
