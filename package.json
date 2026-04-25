@@ -12,6 +12,7 @@
     "@heroui/react": "^3.0.3",
     "@heroui/styles": "^3.0.3",
     "@itsu/api-sdk": "*",
+    "@next/env": "^16.2.4",
     "@tailwindcss/postcss": "^4.2.4",
     "next-auth": "^4.24.14",
     "postcss": "^8.5.10",
