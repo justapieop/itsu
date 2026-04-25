@@ -1,5 +1,5 @@
-import { Column, Entity, Index, PrimaryColumn } from "typeorm";
-import { UserRole } from "../domain/UserRole";
+import { Column, CreateDateColumn, Entity, Index, PrimaryColumn, UpdateDateColumn } from "typeorm";
+import { UserRole } from "../../domain/UserRole";
 
 @Entity({
   name: "users",
@@ -22,6 +22,9 @@ export class TypeormUserSchema {
     nullable: false,
   })
   public avatarUrl!: string;
+
+  @CreateDateColumn()
+  public createdAt!: Date;
 
   @Column({
     type: "enum",
