@@ -2,7 +2,7 @@ import { Controller, Get, Inject, Post, UseGuards, Body } from "@nestjs/common";
 import { AuthenticatedUser } from "../../common/decorators/AuthenticatedUser.decorator";
 import { User } from "./domain/User";
 import { AuthenticatedGuard } from "../../common/guards/Authenticated.guard";
-import { ApiBearerAuth, ApiForbiddenResponse, ApiOkResponse, ApiUnauthorizedResponse } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiExcludeEndpoint, ApiForbiddenResponse, ApiOkResponse, ApiUnauthorizedResponse } from "@nestjs/swagger";
 import { USER_REPOSITORY, type UserRepository } from "./application/in/UserRepository.port";
 import { AuthgearWebhookDto } from "./infrastructure/http/AuthgearWebhook.dto";
 import { ValidSignatureGuard } from "../../common/guards/ValidSignature.guard";
@@ -34,6 +34,7 @@ export class UserController {
 
   @Post("/webhook")
   @UseGuards(ValidSignatureGuard)
+  @ApiExcludeEndpoint()
   public async onWebhook(@Body() webhookDto: AuthgearWebhookDto): Promise<void> {
     const standardAttributes = webhookDto.payload.user.standardAttributes;
 
