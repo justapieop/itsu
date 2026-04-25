@@ -1,4 +1,4 @@
-import { ExecutionContext, Injectable } from "@nestjs/common";
+import { ExecutionContext, ForbiddenException, Injectable } from "@nestjs/common";
 import { AuthenticatedGuard } from "./Authenticated.guard";
 import { Request } from "express";
 import { User } from "../../modules/user/domain/User";
@@ -15,7 +15,7 @@ export class RequireActiveGuard extends AuthenticatedGuard {
     const user: User = req.user;
 
     if (user.suspended) {
-      return false;
+      throw new ForbiddenException();
     }
     
     return true;

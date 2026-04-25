@@ -20,10 +20,20 @@ export class TypeormUserSchema {
   @Column({
     type: "text",
     nullable: false,
+    name: "avatar_url",
   })
   public avatarUrl!: string;
 
-  @CreateDateColumn()
+  @Column({
+    type: "text",
+    nullable: false,
+    name: "display_name",
+  })
+  public displayName!: string;
+
+  @CreateDateColumn({
+    name: "created_at",
+  })
   public createdAt!: Date;
 
   @Column({

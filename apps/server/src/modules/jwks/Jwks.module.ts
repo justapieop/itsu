@@ -1,4 +1,4 @@
-import { Module } from "@nestjs/common";
+import { Global, Module } from "@nestjs/common";
 import { JoseService } from "./infrastructure/Jose.service";
 import { JWKS_SERVICE } from "./application/in/Jwks.port";
 import { ConfigModule } from "@nestjs/config";

@@ -11,7 +11,7 @@ export class TypeormUserRepositoryService implements UserRepository {
   public constructor(
     @InjectRepository(TypeormUserSchema)
     private readonly userRepo: Repository<TypeormUserSchema>,
-  ) {}
+  ) { }
 
   public async save(user: User): Promise<User> {
     const insertionResult: InsertResult = await this.userRepo
@@ -24,8 +24,9 @@ export class TypeormUserRepositoryService implements UserRepository {
         avatarUrl: user.avatarUrl,
         role: user.role,
         suspended: user.suspended,
+        displayName: user.displayName,
       })
-      .orUpdate(["email", "avatarUrl", "updatedAt", "role", "suspended"], ["id"])
+      .orUpdate(["email", "avatar_url", "suspended"], ["id"])
       .returning("*")
       .execute();
 
@@ -35,6 +36,7 @@ export class TypeormUserRepositoryService implements UserRepository {
       return new User(
         inserted.id,
         inserted.email,
+        inserted.displayName,
         inserted.avatarUrl,
         inserted.role,
         inserted.suspended,
@@ -51,6 +53,7 @@ export class TypeormUserRepositoryService implements UserRepository {
     return new User(
       conflicted.id,
       conflicted.email,
+      conflicted.displayName,
       conflicted.avatarUrl,
       conflicted.role,
       conflicted.suspended,
@@ -68,6 +71,7 @@ export class TypeormUserRepositoryService implements UserRepository {
     return new User(
       fetched.id,
       fetched.email,
+      fetched.displayName,
       fetched.avatarUrl,
       fetched.role,
       fetched.suspended,

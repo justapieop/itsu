@@ -4,4 +4,5 @@ export const USER_REPOSITORY = Symbol("USER_REPOSITORY");
 
 export interface UserRepository {
   findUserById(id: string, suspended: boolean): Promise<User | null>;
+  save(user: User): Promise<User>;
 }
