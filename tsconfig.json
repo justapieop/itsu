@@ -2,13 +2,16 @@
   "files": [],
   "references": [
     {
+      "path": "apps/admin"
+    },
+    {
       "path": "apps/client"
     },
     {
       "path": "apps/server"
     },
     {
-      "path": "apps/admin"
+      "path": "libs/api-sdk"
     },
     {
       "path": "libs/chakra"
