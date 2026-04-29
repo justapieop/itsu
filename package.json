@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@authgear/nextjs": "^0.4.0",
+    "@heroicons/react": "^2.2.0",
     "@heroui/react": "^3.0.3",
     "@heroui/styles": "^3.0.3",
     "@itsu/api-sdk": "*",
