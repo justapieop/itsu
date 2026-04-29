@@ -1,4 +1,4 @@
-import { Column, Entity, Index, PrimaryColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, Index, PrimaryColumn } from "typeorm";
 
 @Entity({
   name: "courts",
@@ -34,12 +34,16 @@ export class TypeOrmCourtEntity {
   @Index()
   public address!: string;
 
-  @Column()
+  @CreateDateColumn({
+    name: "created_at",
+    type: "timestamptz",
+  })
+  public created_at!: Date;
 
   @Column({
     type: "boolean",
     nullable: false,
     default: false,
   })
-  public isOpen!: boolean;
+  public open!: boolean;
 }
