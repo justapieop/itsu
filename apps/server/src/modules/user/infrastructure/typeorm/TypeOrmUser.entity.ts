@@ -4,7 +4,7 @@ import { UserRole } from "../../domain/UserRole";
 @Entity({
   name: "users",
 })
-export class TypeormUserSchema {
+export class TypeormUserEntity {
   @PrimaryColumn({
     type: "uuid",
   })
@@ -33,6 +33,7 @@ export class TypeormUserSchema {
 
   @CreateDateColumn({
     name: "created_at",
+    type: "timestamptz",
   })
   public createdAt!: Date;
 

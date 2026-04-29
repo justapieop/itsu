@@ -1,15 +1,15 @@
 import { Module } from "@nestjs/common";
-import { TypeormUserRepositoryService } from "./infrastructure/typeorm/TypeormUserRepository.service";
+import { TypeormUserRepositoryService } from "./infrastructure/typeorm/TypeOrmUser.repository";
 import { USER_REPOSITORY } from "./application/in/UserRepository.port";
 import { DatabaseModule } from "../database/Database.module";
 import { UserController } from "./User.controller";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { TypeormUserSchema } from "./infrastructure/typeorm/TypeormUser.schema";
+import { TypeormUserEntity } from "./infrastructure/typeorm/TypeOrmUser.entity";
 import { JwksModule } from "../jwks/Jwks.module";
 import { KeyStoreModule } from "../keystore/KeyStore.module";
 
 @Module({
-  imports: [DatabaseModule, KeyStoreModule, TypeOrmModule.forFeature([TypeormUserSchema]), JwksModule],
+  imports: [DatabaseModule, KeyStoreModule, TypeOrmModule.forFeature([TypeormUserEntity]), JwksModule],
   providers: [
     TypeormUserRepositoryService,
     {

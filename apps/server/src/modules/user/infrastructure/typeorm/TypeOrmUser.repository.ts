@@ -2,7 +2,7 @@ import { Injectable, UseInterceptors } from "@nestjs/common";
 import { UserRepository } from "../../application/in/UserRepository.port";
 import { User } from "../../domain/User";
 import { InjectRepository } from "@nestjs/typeorm";
-import { TypeormUserSchema } from "./TypeormUser.schema";
+import { TypeormUserEntity } from "./TypeOrmUser.entity";
 import { InsertResult, Repository } from "typeorm";
 import { UserInsertError } from "../../domain/UserInsert.error";
 import { CacheInterceptor, CacheTTL } from "@nestjs/cache-manager";
@@ -10,15 +10,15 @@ import { CacheInterceptor, CacheTTL } from "@nestjs/cache-manager";
 @Injectable()
 export class TypeormUserRepositoryService implements UserRepository {
   public constructor(
-    @InjectRepository(TypeormUserSchema)
-    private readonly userRepo: Repository<TypeormUserSchema>,
+    @InjectRepository(TypeormUserEntity)
+    private readonly userRepo: Repository<TypeormUserEntity>,
   ) { }
 
   public async save(user: User): Promise<User> {
     const insertionResult: InsertResult = await this.userRepo
       .createQueryBuilder()
       .insert()
-      .into(TypeormUserSchema)
+      .into(TypeormUserEntity)
       .values({
         id: user.id,
         email: user.email,
@@ -31,7 +31,7 @@ export class TypeormUserRepositoryService implements UserRepository {
       .returning("*")
       .execute();
 
-    const inserted: TypeormUserSchema | undefined = insertionResult.raw[0];
+    const inserted: TypeormUserEntity | undefined = insertionResult.raw[0];
 
     if (inserted) {
       return new User(
@@ -45,7 +45,7 @@ export class TypeormUserRepositoryService implements UserRepository {
       );
     }
 
-    const conflicted: TypeormUserSchema | null = await this.userRepo.findOneBy({ id: user.id });
+    const conflicted: TypeormUserEntity | null = await this.userRepo.findOneBy({ id: user.id });
 
     if (!conflicted) {
       throw new UserInsertError();
@@ -65,7 +65,7 @@ export class TypeormUserRepositoryService implements UserRepository {
   @UseInterceptors(CacheInterceptor)
   @CacheTTL(60 * 60 * 1000)
   public async findUserById(id: string, suspended: boolean): Promise<User | null> {
-    const fetched: TypeormUserSchema | null = await this.userRepo.findOneBy({ id, suspended, });
+    const fetched: TypeormUserEntity | null = await this.userRepo.findOneBy({ id, suspended, });
 
     if (!fetched) {
       return null;
