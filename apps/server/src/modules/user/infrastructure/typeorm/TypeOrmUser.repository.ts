@@ -1,21 +1,21 @@
-import { Injectable, UseInterceptors } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
+import { InsertResult, Repository } from "typeorm";
+
 import { UserRepository } from "../../application/in/UserRepository.port";
 import { User } from "../../domain/User";
-import { InjectRepository } from "@nestjs/typeorm";
-import { TypeormUserEntity } from "./TypeOrmUser.entity";
-import { InsertResult, Repository } from "typeorm";
 import { UserInsertError } from "../../domain/UserInsert.error";
-import { CacheInterceptor, CacheTTL } from "@nestjs/cache-manager";
+import { TypeormUserEntity } from "./TypeOrmUser.entity";
 
 @Injectable()
 export class TypeormUserRepositoryService implements UserRepository {
   public constructor(
     @InjectRepository(TypeormUserEntity)
     private readonly userRepo: Repository<TypeormUserEntity>,
-  ) { }
+  ) {}
 
   public async save(user: User): Promise<User> {
-    const insertionResult: InsertResult = await this.userRepo
+    const result: InsertResult = await this.userRepo
       .createQueryBuilder()
       .insert()
       .into(TypeormUserEntity)
@@ -31,54 +31,28 @@ export class TypeormUserRepositoryService implements UserRepository {
       .returning("*")
       .execute();
 
-    const inserted: TypeormUserEntity | undefined = insertionResult.raw[0];
+    const entity: TypeormUserEntity | undefined = result.raw[0]
+      ?? await this.userRepo.findOneBy({ id: user.id }) ?? undefined;
 
-    if (inserted) {
-      return new User(
-        inserted.id,
-        inserted.email,
-        inserted.displayName,
-        inserted.avatarUrl,
-        inserted.role,
-        inserted.suspended,
-        inserted.createdAt,
-      );
-    }
+    if (!entity) throw new UserInsertError();
 
-    const conflicted: TypeormUserEntity | null = await this.userRepo.findOneBy({ id: user.id });
-
-    if (!conflicted) {
-      throw new UserInsertError();
-    }
-
-    return new User(
-      conflicted.id,
-      conflicted.email,
-      conflicted.displayName,
-      conflicted.avatarUrl,
-      conflicted.role,
-      conflicted.suspended,
-      conflicted.createdAt,
-    );
+    return this.toUser(entity);
   }
 
-  @UseInterceptors(CacheInterceptor)
-  @CacheTTL(60 * 60 * 1000)
   public async findUserById(id: string, suspended: boolean): Promise<User | null> {
-    const fetched: TypeormUserEntity | null = await this.userRepo.findOneBy({ id, suspended, });
+    const entity = await this.userRepo.findOneBy({ id, suspended });
+    return entity ? this.toUser(entity) : null;
+  }
 
-    if (!fetched) {
-      return null;
-    }
-
+  private toUser(entity: TypeormUserEntity): User {
     return new User(
-      fetched.id,
-      fetched.email,
-      fetched.displayName,
-      fetched.avatarUrl,
-      fetched.role,
-      fetched.suspended,
-      fetched.createdAt,
+      entity.id,
+      entity.email,
+      entity.displayName,
+      entity.avatarUrl,
+      entity.role,
+      entity.suspended,
+      entity.createdAt,
     );
   }
 }
