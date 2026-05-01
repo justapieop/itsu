@@ -1,4 +1,4 @@
-import { Controller, Get, Inject, Post, UseGuards, Body } from "@nestjs/common";
+import { Controller, Get, Inject, Post, UseGuards, Body, UseInterceptors } from "@nestjs/common";
 import { AuthenticatedUser } from "../../common/decorators/AuthenticatedUser.decorator";
 import { User } from "./domain/User";
 import { AuthenticatedGuard } from "../../common/guards/Authenticated.guard";
@@ -7,6 +7,7 @@ import { USER_REPOSITORY, type UserRepository } from "./application/in/UserRepos
 import { AuthgearWebhookDto } from "./infrastructure/http/AuthgearWebhook.dto";
 import { ValidSignatureGuard } from "../../common/guards/ValidSignature.guard";
 import { UserRole } from "./domain/UserRole";
+import { CacheInterceptor, CacheTTL } from "@nestjs/cache-manager";
 
 @Controller("/users")
 export class UserController {
@@ -15,6 +16,8 @@ export class UserController {
     private readonly userRepository: UserRepository,
   ) {}
 
+  @UseInterceptors(CacheInterceptor)
+  @CacheTTL(24 * 60 * 60 * 1000)
   @Get("/me")
   @ApiOkResponse({
     description: "Get currently logged in user",
