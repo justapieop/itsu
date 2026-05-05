@@ -1,6 +1,8 @@
 import { Column, CreateDateColumn, Entity, Index, OneToOne, PrimaryColumn } from "typeorm";
-import { TypeOrmCourtEntity } from "../../court/infrastructure/TypeOrmCourt.entity";
+import { TypeOrmCourtEntity } from "../../court/infrastructure/typeorm/TypeOrmCourt.entity";
 import { TypeormUserEntity } from "../../user/infrastructure/typeorm/TypeOrmUser.entity";
+import { User } from "../../user/domain/User";
+import { Court } from "../../court/domain/Court";
 
 @Entity()
 export class TypeOrmBookingEntity {
@@ -16,7 +18,7 @@ export class TypeOrmBookingEntity {
     name: "court_id",
   })
   @Index()
-  public courtId!: string;
+  public court!: Court;
 
   @OneToOne(() => TypeormUserEntity)
   @Column({
@@ -25,7 +27,7 @@ export class TypeOrmBookingEntity {
     name: "user_id",
   })
   @Index()
-  public userId!: string;
+  public user!: User;
 
   @CreateDateColumn({
     name: "created_at",

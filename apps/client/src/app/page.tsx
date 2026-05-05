@@ -1,8 +1,13 @@
 import { JSX } from "react";
-import { client } from "@itsu/api-sdk";
+import { Navbar } from "../components/Navbar";
+import { DropdownAvatar } from "@/components/home/DropdownAvatar";
 
-export default function Home(): JSX.Element {
+export default async function Home(): Promise<JSX.Element> {
+  const dropdown = await DropdownAvatar();
+  
   return (
-    <></>
+    <>
+      <Navbar brand={"Itsu"} items={[{ label: "Trang chủ", href: "/" }, { label: "Danh sách sân", href: "/courts" }]} rightContent={dropdown} />
+    </>
   );
 }

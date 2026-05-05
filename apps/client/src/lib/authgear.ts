@@ -1,4 +1,10 @@
 import { AuthgearConfig } from "@authgear/nextjs";
+import { loadEnvConfig } from "@next/env";
+import { join } from "path";
+
+const cwd: string = process.cwd();
+
+loadEnvConfig(join(cwd, "..", ".."));
 
 export const authgearConfig: AuthgearConfig = {
   endpoint: process.env.AUTHGEAR_ENDPOINT!,

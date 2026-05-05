@@ -38,7 +38,7 @@ export class TypeOrmCourtEntity {
     name: "created_at",
     type: "timestamptz",
   })
-  public created_at!: Date;
+  public createdAt!: Date;
 
   @Column({
     type: "boolean",
@@ -46,4 +46,19 @@ export class TypeOrmCourtEntity {
     default: false,
   })
   public open!: boolean;
+
+  @Column({
+    type: "text",
+    nullable: false,
+    default: ""
+  })
+  public terms!: string;
+
+  @Column({
+    type: "float4",
+    nullable: false,
+    default: 1,
+    name: "min_hours_per_session"
+  })
+  public minHoursPerSession!: number;
 }
