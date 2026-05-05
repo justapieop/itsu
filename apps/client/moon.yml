@@ -1,0 +1,7 @@
+language: typescript
+
+tasks:
+  dev:
+    command: "npm run dev"
+    outputs:
+      - .next/**/*

@@ -1,0 +1,5 @@
+language: typescript
+
+tasks:
+  generate:
+    command: npm run generate http://localhost:3001/api-docs-json -- --output ./src/schema.d.ts
